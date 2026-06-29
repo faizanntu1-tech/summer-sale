@@ -175,7 +175,7 @@
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 0;
         }
 
         .mobile-menu-link {
@@ -183,13 +183,20 @@
             color: var(--text-dark);
             font-size: 16px;
             font-weight: 500;
-            padding: 12px 0;
+            padding: 15px 0;
             border-bottom: 1px solid var(--border-color);
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            display: block;
+            cursor: pointer;
+        }
+
+        .mobile-menu-link:active {
+            background-color: var(--primary-bg);
         }
 
         .mobile-menu-link:hover {
             color: var(--primary-accent);
+            padding-left: 10px;
         }
 
         .menu-overlay {
@@ -586,6 +593,7 @@
             display: flex;
             gap: 10px;
             margin-top: auto;
+            width: 100%;
         }
 
         .btn-quick-buy {
@@ -593,12 +601,16 @@
             background-color: white;
             color: var(--text-dark);
             border: 2px solid var(--button-border);
-            padding: 12px;
+            padding: 12px 8px;
             border-radius: 4px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn-quick-buy:hover {
@@ -610,6 +622,7 @@
         .btn-icon {
             width: 40px;
             height: 40px;
+            min-width: 40px;
             border: 2px solid var(--button-border);
             background-color: white;
             border-radius: 4px;
@@ -1218,6 +1231,37 @@
             }
         }
 
+        /* ======================== MOBILE OPTIMIZATION ======================== */
+        @media (hover: none) and (pointer: coarse) {
+            /* Touch devices - remove hover effects */
+            .btn-quick-buy:hover {
+                border-color: var(--button-border);
+                color: var(--text-dark);
+                background-color: white;
+            }
+
+            .btn-icon:hover {
+                border-color: var(--button-border);
+                color: var(--text-dark);
+            }
+
+            /* Make buttons more touch-friendly */
+            .btn-quick-buy {
+                min-height: 44px;
+            }
+
+            .btn-icon {
+                min-width: 44px;
+                width: 44px;
+                height: 44px;
+            }
+
+            button {
+                -webkit-user-select: none;
+                -webkit-touch-callout: none;
+            }
+        }
+
         /* ======================== ANIMATIONS ======================== */
         @keyframes fadeIn {
             from {
@@ -1374,9 +1418,31 @@
 
             .product-name {
                 font-size: 14px;
+                min-height: auto;
             }
 
             .price-sale {
+                font-size: 16px;
+            }
+
+            .product-info {
+                padding: 15px;
+            }
+
+            .product-actions {
+                gap: 8px;
+            }
+
+            .btn-quick-buy {
+                font-size: 12px;
+                padding: 10px 6px;
+                min-height: 36px;
+            }
+
+            .btn-icon {
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
                 font-size: 16px;
             }
 
@@ -1388,6 +1454,15 @@
                 padding: 20px;
                 max-width: 100%;
                 border-radius: 8px 8px 0 0;
+            }
+
+            .mobile-menu {
+                max-width: 280px;
+            }
+
+            .mobile-menu-link {
+                font-size: 15px;
+                padding: 14px 0;
             }
         }
 
