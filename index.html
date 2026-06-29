@@ -1927,36 +1927,63 @@
             const city = document.getElementById('customerCity').value.trim();
             const notes = document.getElementById('customerNotes').value.trim();
 
-            // Validation
-            if (!name || !phone || !country || !address || !city) {
-                alert('Please fill in all required fields');
+            console.log('Form Values:', { name, phone, country, address, city });
+
+            // Validation - Check Empty Fields
+            if (!name) {
+                alert('❌ Please enter your name');
+                return;
+            }
+            if (!phone) {
+                alert('❌ Please enter your phone number');
+                return;
+            }
+            if (!country) {
+                alert('❌ Please select country');
+                return;
+            }
+            if (!address) {
+                alert('❌ Please enter your address');
+                return;
+            }
+            if (!city) {
+                alert('❌ Please enter your city');
                 return;
             }
 
             // Country Validation - Only Pakistan
             if (country !== 'Pakistan') {
-                alert('❌ We currently deliver only to Pakistan. Please select Pakistan as your country.');
+                alert('❌ We currently deliver only to Pakistan.\n\nPlease select Pakistan as your country.');
                 return;
             }
 
-            // Pakistani Phone Number Validation
-            // Valid formats: +923001234567, 03001234567, 923001234567
-            const phoneRegex = /^(\+92|0092|92|0)?[3-9][0-9]{9}$/;
-            const cleanPhone = phone.replace(/\s+/g, ''); // Remove spaces
+            // Pakistani Phone Number Validation - SIMPLIFIED
+            const cleanPhone = phone.replace(/[^\d+]/g, ''); // Remove all except digits and +
             
-            if (!phoneRegex.test(cleanPhone)) {
-                alert('❌ Please enter a valid Pakistani phone number.\n\nValid formats:\n• +92 300 1234567\n• 0300 1234567\n• 03001234567');
+            // Accept Pakistani phone numbers in any of these formats:
+            // 03001234567, +923001234567, 923001234567, 03005460203
+            const isValidPakPhone = /^(0|92|\+92)[3][0-9]{9}$/.test(cleanPhone) || 
+                                    /^(0|92|\+92)[3][0-9]{9}$/.test(phone.replace(/\s/g, ''));
+
+            if (!isValidPakPhone) {
+                alert('❌ Please enter a valid Pakistani phone number.\n\nExamples:\n• 03005460203\n• +92 300 5460203\n• 923005460203');
+                console.log('Phone validation failed for:', phone);
                 return;
             }
 
-            // Format phone number for WhatsApp (convert to +92 format)
+            // Format phone number for WhatsApp
             let whatsappPhone = cleanPhone;
-            if (cleanPhone.startsWith('0')) {
-                whatsappPhone = '92' + cleanPhone.slice(1);
-            } else if (!cleanPhone.startsWith('92') && !cleanPhone.startsWith('+92')) {
-                whatsappPhone = '92' + cleanPhone;
+            
+            // Convert to 92XXXXXXXXXX format (WhatsApp standard)
+            if (whatsappPhone.startsWith('0')) {
+                whatsappPhone = '92' + whatsappPhone.slice(1);
+            } else if (whatsappPhone.startsWith('+92')) {
+                whatsappPhone = whatsappPhone.slice(1);
             }
-            whatsappPhone = whatsappPhone.replace(/\+/g, '');
+            
+            whatsappPhone = whatsappPhone.replace(/\D/g, ''); // Remove all non-digits
+
+            console.log('WhatsApp Phone:', whatsappPhone);
 
             // Generate Order Number
             const orderNumber = 'ORDER-' + Date.now();
@@ -1998,14 +2025,19 @@
             orderDetails += `Visit: LUXERABYFAIZAN`;
 
             // Open WhatsApp
-            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${orderDetails}`;
+            console.log('Opening WhatsApp with number:', whatsappPhone);
+            const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${orderDetails}`;
+            console.log('WhatsApp URL:', whatsappUrl);
+            
             window.open(whatsappUrl, '_blank');
 
             // Clear cart and close modal
-            cart = [];
-            updateCart();
-            closeCheckout();
-            document.getElementById('checkoutForm').reset();
+            setTimeout(() => {
+                cart = [];
+                updateCart();
+                closeCheckout();
+                document.getElementById('checkoutForm').reset();
+            }, 500);
         }
 
         // ======================== WISHLIST ========================
