@@ -2108,26 +2108,30 @@
             });
         });
 
-        // ======================== CART EVENT LISTENERS ========================
-        document.getElementById('cartIcon').addEventListener('click', openCart);
-        document.getElementById('closeCart').addEventListener('click', closeCart);
-        document.getElementById('cartOverlay').addEventListener('click', closeCart);
-        document.getElementById('checkoutBtn').addEventListener('click', openCheckout);
-        document.getElementById('closeCheckout').addEventListener('click', closeCheckout);
-        document.getElementById('placeOrderBtn').addEventListener('click', placeOrder);
-
-        // Close checkout when clicking overlay
-        document.getElementById('checkoutModal').addEventListener('click', (e) => {
-            if (e.target.id === 'checkoutModal') {
-                closeCheckout();
-            }
-        });
-
         // ======================== INITIALIZATION ========================
         document.addEventListener('DOMContentLoaded', () => {
+            // Render products first
             renderProducts();
             updateCartSummary();
             updateCountdown();
+
+            // ======================== CART EVENT LISTENERS ========================
+            // Attach all event listeners AFTER DOM is ready
+            document.getElementById('cartIcon').addEventListener('click', openCart);
+            document.getElementById('closeCart').addEventListener('click', closeCart);
+            document.getElementById('cartOverlay').addEventListener('click', closeCart);
+            document.getElementById('checkoutBtn').addEventListener('click', openCheckout);
+            document.getElementById('closeCheckout').addEventListener('click', closeCheckout);
+            document.getElementById('placeOrderBtn').addEventListener('click', placeOrder);
+
+            // Close checkout when clicking overlay
+            document.getElementById('checkoutModal').addEventListener('click', (e) => {
+                if (e.target.id === 'checkoutModal') {
+                    closeCheckout();
+                }
+            });
+
+            console.log('✅ All event listeners attached successfully');
         });
     </script>
 
